@@ -44,22 +44,28 @@ runs:
       shell: bash
       run: |
         flutter test --coverage > tests_results.txt
-        cat tests_results.txt >> $GITHUB_STEP_SUMMARY
+
+    - name: Push test summary to step summary
+      if: success() || failure()
+      run: cat tests_results.txt >> $GITHUB_STEP_SUMMARY
 
     - name: Install LCOV
       shell: bash
+      if: success() || failure()
       run: |
         sudo apt-get install lcov
 
     - name: Generate LCOV summary
       shell: bash
       id: lcov
+      if: success() || failure()
       run: |
         lcov --summary coverage/lcov.info > coverage/lcov.summary
         cat coverage/lcov.summary >> $GITHUB_STEP_SUMMARY
 
     - name: Convert LCOV to HTML
       shell: bash
+      if: success() || failure()
       run: |
         genhtml coverage/lcov.info -o coverage/html
 
