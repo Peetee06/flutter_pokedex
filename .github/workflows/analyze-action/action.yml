@@ -32,10 +32,6 @@ runs:
       shell: bash
       run: |
         flutter analyze > analysis.txt
+    - name: Push results to step summary
+        if: success() || failure()
         cat analysis.txt >> $GITHUB_STEP_SUMMARY
-        if grep -q "error" analysis.txt; then
-          echo "Flutter analyze found errors"
-          exit 1
-        else
-          echo "Flutter analyze found no errors"
-        fi
