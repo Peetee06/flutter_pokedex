@@ -43,8 +43,8 @@ runs:
       id: tests
       shell: bash
       run: |
-        TESTS_RESULTS=$(flutter test --coverage)
-        echo "$TESTS_RESULTS" >> $GITHUB_STEP_SUMMARY
+        flutter test --coverage > tests_results.txt
+        cat tests_results.txt >> $GITHUB_STEP_SUMMARY
 
     - name: Install LCOV
       shell: bash
@@ -55,8 +55,8 @@ runs:
       shell: bash
       id: lcov
       run: |
-        LCOV_SUMMARY=$(lcov --summary coverage/lcov.info)
-        echo "$LCOV_SUMMARY" >> $GITHUB_STEP_SUMMARY
+        lcov --summary coverage/lcov.info > coverage/lcov.summary
+        cat coverage/lcov.summary >> $GITHUB_STEP_SUMMARY
 
     - name: Convert LCOV to HTML
       shell: bash
