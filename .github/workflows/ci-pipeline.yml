@@ -13,16 +13,10 @@ env:
   JAVA_VERSION: 11
 
 jobs:
-  initialize:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
   analyze:
     runs-on: ubuntu-latest
-    needs: initialize
     steps:
+      - uses: actions/checkout@v3
       - name: Analyze Flutter code
         uses: ./.github/workflows/analyze-action
         with:
@@ -30,8 +24,8 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    needs: initialize
     steps:
+      - uses: actions/checkout@v3
       - name: Test and generate coverage
         uses: ./.github/workflows/test-action
         with:
