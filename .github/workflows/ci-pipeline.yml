@@ -31,7 +31,7 @@ jobs:
         id: tests
         run: |
           TESTS_RESULTS=$(flutter test --coverage)
-          echo "tests=$TESTS_RESULTS" >> "$GITHUB_OUTPUT"
+          echo "$TESTS_RESULTS" >> $GITHUB_STEP_SUMMARY
 
       - name: Install LCOV
         run: |
@@ -41,9 +41,4 @@ jobs:
         id: lcov
         run: |
           LCOV_SUMMARY=$(lcov --summary coverage/lcov.info)
-          echo "summary=$LCOV_SUMMARY" >> "$GITHUB_OUTPUT"
-
-      - name: Add markdown
-        run: |
-          echo "${{ steps.lcov.outputs.summary }}" >> $GITHUB_STEP_SUMMARY
-          echo "${{ steps.tests.outputs.tests }}" >> $GITHUB_STEP_SUMMARY
+          echo "$LCOV_SUMMARY" >> $GITHUB_STEP_SUMMARY
