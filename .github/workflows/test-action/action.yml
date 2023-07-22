@@ -46,6 +46,7 @@ runs:
         flutter test --coverage > tests_results.txt
 
     - name: Push test summary to step summary
+      shell: bash
       if: success() || failure()
       run: cat tests_results.txt >> $GITHUB_STEP_SUMMARY
 
