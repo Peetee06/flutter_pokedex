@@ -33,5 +33,6 @@ runs:
       run: |
         flutter analyze > analysis.txt
     - name: Push results to step summary
+      shell: bash
       if: success() || failure()
       run: cat analysis.txt >> $GITHUB_STEP_SUMMARY
