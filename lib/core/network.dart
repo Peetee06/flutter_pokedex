@@ -7,13 +7,14 @@ class NetworkManager {
 
   const NetworkManager._(this.dio);
 
-  factory NetworkManager() {
-    final dio = Dio();
-
-    dio.interceptors.add(DioCacheManager(CacheConfig(
+  factory NetworkManager({Dio? dio, DioCacheManager? dioCacheManager}) {
+    dio ??= Dio();
+    dioCacheManager ??= DioCacheManager(CacheConfig(
       defaultMaxAge: Duration(days: 10),
       maxMemoryCacheCount: 3,
-    )).interceptor);
+    ));
+
+    dio.interceptors.add(dioCacheManager.interceptor);
 
     return NetworkManager._(dio);
   }
