@@ -3,46 +3,47 @@ name: Continuous integration
 on:
   push:
     branches:
-      - main # replace with your default branch name if not 'main'
+      - main
   pull_request:
     branches:
-      - main # replace with your default branch name if not 'main'
+      - main
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/setup-java@v2
+      - uses: actions/setup-java@v3
         with:
-          java-version: "12"
+          java-version: "11"
           distribution: "adopt"
 
-      - uses: subosito/flutter-action@v1
+      - uses: subosito/flutter-action@v2
         with:
-          flutter-version: "2.2.3" # replace with your flutter version
+          flutter-version: "3.10.1"
 
       - name: Install dependencies
-        run: flutter pub get
+        run: flutter packages get
 
       - name: Run Tests
-        run: flutter test --coverage
+        id: tests
+        run: |
+          TESTS_RESULTS=$(flutter test --coverage)
+          echo "tests=$TESTS_RESULTS" >> "$GITHUB_OUTPUT"
 
-      - name: Convert to lcov
+      - name: Install LCOV
         run: |
           sudo apt-get install lcov
-          genhtml coverage/lcov.info -o coverage/html
 
-      - name: Archive code coverage results
-        uses: actions/upload-artifact@v2
-        with:
-          name: flutter-coverage-report
-          path: coverage/html/
+      - name: Generate LCOV summary
+        id: lcov
+        run: |
+          LCOV_SUMMARY=$(lcov --summary coverage/lcov.info)
+          echo "summary=$LCOV_SUMMARY" >> "$GITHUB_OUTPUT"
 
-      - name: Publish coverage report
-        uses: romeovs/lcov-reporter-action@v0.2.16
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          lcov-file: ./coverage/lcov.info
+      - name: Add markdown
+        run: |
+          echo "${{ steps.lcov.outputs.summary }}" >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.tests.outputs.tests }}" >> $GITHUB_STEP_SUMMARY
