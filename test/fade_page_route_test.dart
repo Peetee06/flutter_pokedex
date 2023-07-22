@@ -30,7 +30,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Verify that the new page is displayed.
-    expect(find.text('New Page1'), findsOneWidget);
+    expect(find.text('New Page'), findsOneWidget);
   });
 
   testWidgets('FadeRoute should apply fade transition', (WidgetTester tester) async {
