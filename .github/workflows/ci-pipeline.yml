@@ -1,0 +1,48 @@
+name: Continuous integration
+
+on:
+  push:
+    branches:
+      - main # replace with your default branch name if not 'main'
+  pull_request:
+    branches:
+      - main # replace with your default branch name if not 'main'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-java@v2
+        with:
+          java-version: "12"
+          distribution: "adopt"
+
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: "2.2.3" # replace with your flutter version
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run Tests
+        run: flutter test --coverage
+
+      - name: Convert to lcov
+        run: |
+          sudo apt-get install lcov
+          genhtml coverage/lcov.info -o coverage/html
+
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v2
+        with:
+          name: flutter-coverage-report
+          path: coverage/html/
+
+      - name: Publish coverage report
+        uses: romeovs/lcov-reporter-action@v0.2.16
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          lcov-file: ./coverage/lcov.info
