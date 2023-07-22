@@ -2,13 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_web_frame/flutter_web_frame.dart';
 
 import 'package:pokedex/configs/colors.dart';
 import 'package:pokedex/configs/images.dart';
 import 'package:pokedex/data/categories.dart';
 import 'package:pokedex/domain/entities/category.dart';
-import 'package:pokedex/ui/widgets/search_bar.dart';
 import 'package:pokedex/ui/widgets/pokeball_background.dart';
 import 'package:pokedex/routes.dart';
 
