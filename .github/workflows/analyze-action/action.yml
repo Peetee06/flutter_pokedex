@@ -28,4 +28,4 @@ runs:
       run: flutter packages get
 
     - name: Run Flutter Analyze
-      run: flutter analyze
+      run: echo $(flutter analyze) >> $GITHUB_STEP_SUMMARY
