@@ -25,9 +25,9 @@ runs:
         flutter-version: ${{ inputs.flutter-version }}
 
     - name: Install dependencies
-      shell: "bash"
+      shell: bash
       run: flutter packages get
 
     - name: Run Flutter Analyze
-      shell: "bash"
+      shell: bash
       run: echo $(flutter analyze) >> $GITHUB_STEP_SUMMARY
