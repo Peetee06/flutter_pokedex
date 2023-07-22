@@ -10,6 +10,9 @@ inputs:
     required: true
 runs:
   using: "composite"
+  defaults:
+    run:
+      shell: "bash"
   steps:
     - name: Checkout code
       uses: actions/checkout@v3
