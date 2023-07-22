@@ -7,9 +7,6 @@ inputs:
     required: true
 runs:
   using: "composite"
-  defaults:
-    run:
-      shell: "bash"
   steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -28,7 +25,9 @@ runs:
         flutter-version: ${{ inputs.flutter-version }}
 
     - name: Install dependencies
+      shell: "bash"
       run: flutter packages get
 
     - name: Run Flutter Analyze
+      shell: "bash"
       run: echo $(flutter analyze) >> $GITHUB_STEP_SUMMARY

@@ -10,9 +10,6 @@ inputs:
     required: true
 runs:
   using: "composite"
-  defaults:
-    run:
-      shell: "bash"
   steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -39,25 +36,30 @@ runs:
         flutter-version: ${{ inputs.flutter-version }}
 
     - name: Install dependencies
+      shell: "bash"
       run: flutter packages get
 
     - name: Run Tests
       id: tests
+      shell: "bash"
       run: |
         TESTS_RESULTS=$(flutter test --coverage)
         echo "$TESTS_RESULTS" >> $GITHUB_STEP_SUMMARY
 
     - name: Install LCOV
+      shell: "bash"
       run: |
         sudo apt-get install lcov
 
     - name: Generate LCOV summary
+      shell: "bash"
       id: lcov
       run: |
         LCOV_SUMMARY=$(lcov --summary coverage/lcov.info)
         echo "$LCOV_SUMMARY" >> $GITHUB_STEP_SUMMARY
 
     - name: Convert LCOV to HTML
+      shell: "bash"
       run: |
         genhtml coverage/lcov.info -o coverage/html
 
